@@ -13,7 +13,6 @@ namespace Banking_App
 
     class Account
     {
-    
         enum AccountState
         {
                 New,
@@ -37,6 +36,7 @@ namespace Banking_App
         private AccountType m_accountType;
         
 
+     
         public virtual bool WithdrawFunds(decimal withdraw)
         {
             if (withdraw > m_balance)
@@ -59,16 +59,15 @@ namespace Banking_App
 
         public bool DepositFunds(decimal deposit)
         {
+            return true;
+        }  
 
-        }           
     }
 
         
 
-    class InputHandling
+    class InputHandling     //Input Handling
     {
-                // Input Handling
-
         public static int EnterInteger(int min, int max)
         {
 
@@ -91,7 +90,7 @@ namespace Banking_App
             return input;
         }
 
-        public static int EnterDecimal(decimal min, decimal max)
+        public static decimal EnterDecimal(decimal min, decimal max)
         {
 
             decimal input = 0;
@@ -112,7 +111,7 @@ namespace Banking_App
 
             return input;
         }
-        // Now define account structure
+
     }
 
     class Menu
@@ -123,24 +122,24 @@ namespace Banking_App
                 Console.WriteLine("Banking menu\n");
                 Console.WriteLine("1 = Withdraw funds\n2 = create account\n");
 
-                int option = EnterInteger(1, 2);
+                int option = InputHandling.EnterInteger(1, 2);
 
                 do
-        {
-            switch (option)
-            {
-                case 1:
-                    // WithdrawFunds();
-                    break;
-                case 2:
-                    //      Quit();
-                    break;
-                default:
-                    Console.WriteLine("Invalid input.");
-                    break;
-            }
-        }
-        while (option < 1 || option > 2);
+                {
+                    switch (option)
+                    {
+                        case 1:
+                            // WithdrawFunds();
+                            break;
+                        case 2:
+                            //      Quit();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid input.");
+                            break;
+                    }
+                }
+             while (option < 1 || option > 2);
 
             }
     }           
@@ -150,13 +149,13 @@ namespace Banking_App
 
         public static void Main()
         {
-            MainMenu();
+            Menu.MainMenu();
 
-            AccountStruct AndyAccount;
-            AndyAccount.State = AccountState.Active;
-            AndyAccount.Balance = 1000;
+            //AccountStruct AndyAccount;
+            //AndyAccount.State = AccountState.Active;
+            //AndyAccount.Balance = 1000;
 
-            Account Andy;
+            /*Account Andy;
             Andy = new Account();
 
             Console.Write("Enter name: ");
@@ -181,6 +180,8 @@ namespace Banking_App
 
 
             Console.ReadLine();
+            */
+
         }
 
     }
