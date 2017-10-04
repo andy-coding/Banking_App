@@ -3,55 +3,71 @@
 
 namespace Banking_App
 {
-    class BankingApp
+    interface IAccount
     {
+         bool WithdrawFunds(decimal withdraw);
+         decimal GetBalance();
+         bool DepositFunds(decimal deposit);
+    }
 
 
-        public class Account
+    class Account
+    {
+    
+        enum AccountState
         {
-
-            enum AccountState
-            {
                 New,
                 Active,
                 UnderAudit,
                 Frozen,
                 Closed
-            };
+        };
 
-            enum AccountType
-            {
-                Current,
-                StandardInterest,
-                HighInterest,
-            };
+        enum AccountType
+        {
+            Current,
+            StandardInterest,
+            HighInterest,
+        };
 
-            private string m_name;
-            private string m_address;
-            private decimal m_balance = 25; //  ***** temporary value for debugging
-            private AccountState m_state;
-            private AccountType m_accountType;
+        private string m_name;
+        private string m_address;
+        private decimal m_balance = 25; //  ***** temporary value for debugging
+        private AccountState m_state;
+        private AccountType m_accountType;
         
 
-        public bool WithdrawFunds(decimal withdraw)
+        public virtual bool WithdrawFunds(decimal withdraw)
+        {
+            if (withdraw > m_balance)
             {
-                if (withdraw > m_balance)
-                {
-                    Console.WriteLine("Insufficient funds.");
-                    return false;
-                }
-                else
-                {
-                    m_balance = m_balance - withdraw;
-                    Console.WriteLine(withdraw + " withdrawn");
-                    return true;
-                }
+                Console.WriteLine("Insufficient funds.");
+                return false;
+            }
+            else
+            {
+                m_balance = m_balance - withdraw;
+                Console.WriteLine(withdraw + " withdrawn");
+                return true;
             }
         }
 
+        public decimal GetBalance()
+        {
+            return m_balance;
+        }
 
+        public bool DepositFunds(decimal deposit)
+        {
 
-        // Input Handling
+        }           
+    }
+
+        
+
+    class InputHandling
+    {
+                // Input Handling
 
         public static int EnterInteger(int min, int max)
         {
@@ -97,38 +113,40 @@ namespace Banking_App
             return input;
         }
         // Now define account structure
+    }
 
-
-
-
-        public static void MainMenu()
-        {
-
-            Console.WriteLine("Banking menu\n");
-            Console.WriteLine("1 = Withdraw funds\n2 = create account\n");
-
-            int option = EnterInteger(1, 2);
-
-            do
+    class Menu
+    {
+            public static void MainMenu() //This displays the mein menu
             {
-                switch (option)
-                {
-                    case 1:
-                        // WithdrawFunds();
-                        break;
-                    case 2:
-                        //      Quit();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input.");
-                        break;
-                }
+
+                Console.WriteLine("Banking menu\n");
+                Console.WriteLine("1 = Withdraw funds\n2 = create account\n");
+
+                int option = EnterInteger(1, 2);
+
+                do
+        {
+            switch (option)
+            {
+                case 1:
+                    // WithdrawFunds();
+                    break;
+                case 2:
+                    //      Quit();
+                    break;
+                default:
+                    Console.WriteLine("Invalid input.");
+                    break;
             }
-            while (option < 1 || option > 2);
-
         }
+        while (option < 1 || option > 2);
 
+            }
+    }           
 
+    class BankingApp
+    {
 
         public static void Main()
         {
