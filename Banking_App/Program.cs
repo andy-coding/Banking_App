@@ -5,13 +5,15 @@ namespace Banking_App
 {
     interface IAccount
     {
-         bool WithdrawFunds(decimal withdraw);
-         decimal GetBalance();
-         bool DepositFunds(decimal deposit);
+        bool WithdrawFunds(decimal withdraw);
+        decimal GetBalance();
+        bool DepositFunds(decimal deposit);
+        string ToString();
+        bool Equals(object o);
     }
 
 
-    class Account
+    class Account : IAccount
     {
         enum AccountState
         {
@@ -29,24 +31,22 @@ namespace Banking_App
             HighInterest,
         };
 
-        private string m_name;
-        private string m_address;
-        private decimal m_balance = 25; //  ***** temporary value for debugging
-        private AccountState m_state;
-        private AccountType m_accountType;
-        
-
-     
+        private string name;
+        private string address;
+        private decimal balance = 25; //  ***** temporary value for debugging
+        private AccountState state;
+        private AccountType accountType;
+           
         public virtual bool WithdrawFunds(decimal withdraw)
         {
-            if (withdraw > m_balance)
+            if (withdraw > balance)
             {
                 Console.WriteLine("Insufficient funds.");
                 return false;
             }
             else
             {
-                m_balance = m_balance - withdraw;
+                balance = balance - withdraw;
                 Console.WriteLine(withdraw + " withdrawn");
                 return true;
             }
@@ -54,7 +54,7 @@ namespace Banking_App
 
         public decimal GetBalance()
         {
-            return m_balance;
+            return balance;
         }
 
         public bool DepositFunds(decimal deposit)
@@ -62,9 +62,37 @@ namespace Banking_App
             return true;
         }  
 
+        public override string ToString()
+        {
+            return "AccountState: " + this.state + "/nAccountTyoe: " + this.accountType + "/nm_name: " + this.name + "/nm_address: " + this.address + "/nm_balance: " + this.balance; 
+        }
+
+        public override bool Equals(object obj)
+        {
+            Account p = (Account)obj;
+
+            if ((p.name == "Bob") && (p.address == this.address) && (p.balance == this.balance) && (p.state == this.state) && (p.accountType == this.accountType))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 
-        
+    
+    class CustomerAccount : Account
+    {
+
+    }
+
+    class BabyAccount : Account
+    {
+
+    }
 
     class InputHandling     //Input Handling
     {
