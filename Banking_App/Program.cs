@@ -11,7 +11,7 @@ namespace Banking_App
         string ToString();
         bool Equals(object o);
     }
-
+     
 
     class Account : IAccount
     {
