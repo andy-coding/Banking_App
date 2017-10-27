@@ -3,10 +3,13 @@
 
 namespace Banking_App
 {
+
+
     interface IAccount
     {
         string Name
             {get; set;}
+        string GetName();
         bool WithdrawFunds(decimal withdraw);
         decimal GetBalance();
         bool DepositFunds(decimal deposit);
@@ -100,13 +103,23 @@ namespace Banking_App
             }
         }
 
-
+        //constructor
+        public Account (string Name, string inAddress, decimal inBalance)
+        {
+        name = Name;
+        address = inAddress;
+        balance = inBalance;
+        }
     }
-
-    
+ 
     class CustomerAccount : Account
     {
-
+        public CustomerAccount (string Name, string inAddress, decimal inBalance)
+        {
+        base.name = Name;
+        base.address = inAddress;
+        base.balance = inBalance;
+        }
     }
 
     class BabyAccount : Account
@@ -124,6 +137,7 @@ namespace Banking_App
             }
         }
     }
+
 
     class InputHandling     //Input Handling
     {
@@ -203,11 +217,68 @@ namespace Banking_App
             }
     }           
 
+
+    interface IBank 
+    { 
+        IAccount FindAccount (string name); 
+        bool StoreAccount (IAccount account);
+    }
+
+    class ArrayBank
+    {
+        private IAccount [] accounts ;
+        public ArrayBank( int bankSize ) 
+        {
+            accounts = new IAccount[bankSize];
+        }
+
+        public bool StoreAccount (IAccount account) 
+        { 
+            int position = 0; 
+            for (position = 0; position<accounts.Length; position++)   
+            { 
+                if (accounts[position] == null) 
+                { 
+                    accounts[position] = account; 
+                    return true; 
+                } 
+            } 
+        return false; 
+        }
+
+        public IAccount FindAccount ( string name ) 
+        { 
+            int position=0 ; 
+            for (position=0 ; position<accounts.Length ; position++) 
+            { 
+                if ( accounts[position] == null ) 
+                { 
+                    continue; 
+                } 
+                if ( accounts[position].GetName() == name ) 
+                { 
+                    return accounts[position]; 
+                } 
+            } 
+        return null; 
+        }  
+    }
+
+
+
     class BankingApp
     {
 
         public static void Main()
         {
+            ArrayBank ourBank = new ArrayBank(100); 
+            Account newAccount = new Account("Rob", "Robs House", 1000000); 
+            if(ourBank.StoreAccount(newAccount) == true) 
+                Console.WriteLine("Account added to bank"); 
+            IAccount storedAccount = ourBank.FindAccount("Rob"); 
+            if(storedAccount!=null) 
+                Console.WriteLine("Account found in bank");
+
             //Menu.MainMenu();
 
             //AccountStruct AndyAccount;
@@ -215,7 +286,7 @@ namespace Banking_App
             //AndyAccount.Balance = 1000;
 
 
-            // Test to create account  
+            /* Test to create account
             Account Andy;
             Andy = new CustomerAccount();
 
@@ -243,6 +314,7 @@ namespace Banking_App
 
             Andy.WithdrawFunds(withdrawrequest);
             BabyAndy.WithdrawFunds(withdrawrequest);
+            */
 
             Console.ReadLine();
             
