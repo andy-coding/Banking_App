@@ -5,15 +5,13 @@ namespace Banking_App
 {
     interface IAccount
     {
-        string Name
-            {get; set;}
         bool WithdrawFunds(decimal withdraw);
         decimal GetBalance();
         bool DepositFunds(decimal deposit);
         string ToString();
         bool Equals(object o);
     }
-     
+
 
     class Account : IAccount
     {
@@ -34,41 +32,26 @@ namespace Banking_App
         };
 
         private string name;
-        public string Name
-            {
-                get
-                {
-                    return this.name;
-                }
-                set
-                {
-                    this.name = value;
-                }
-            }
-
         private string address;
         private decimal balance = 25; //  ***** temporary value for debugging
         private AccountState state;
         private AccountType accountType;
            
-        public virtual bool WithdrawFunds(decimal withdrawAmount)
+        public virtual bool WithdrawFunds(decimal withdraw)
         {
-           // Console.WriteLine("name: {0}    Name:  {1}", name, Name);
-
-            if (withdrawAmount > balance)
+            if (withdraw > balance)
             {
                 Console.WriteLine("Insufficient funds.");
                 return false;
             }
             else
             {
-                balance = balance - withdrawAmount;
-                Console.WriteLine("£" + withdrawAmount + " withdrawn from account: " + this.Name + ". Balance is now: £" + balance);
+                balance = balance - withdraw;
+                Console.WriteLine(withdraw + " withdrawn");
                 return true;
             }
         }
 
- 
         public decimal GetBalance()
         {
             return balance;
@@ -98,8 +81,8 @@ namespace Banking_App
             }
         }
 
-
     }
+
     
     class CustomerAccount : Account
     {
@@ -108,21 +91,8 @@ namespace Banking_App
 
     class BabyAccount : Account
     {
-        public override bool WithdrawFunds(decimal withdrawAmount)
-        {
-            if (withdrawAmount > 10)
-            {
-                Console.WriteLine("You cannot withdraw more than £10 from Account " + this.Name);
-                return false;
-            }
-            else
-            {
-                return base.WithdrawFunds(withdrawAmount);
-            }
-        }
+
     }
-
-
 
     class InputHandling     //Input Handling
     {
@@ -207,44 +177,38 @@ namespace Banking_App
 
         public static void Main()
         {
-            //Menu.MainMenu();
+            Menu.MainMenu();
 
             //AccountStruct AndyAccount;
             //AndyAccount.State = AccountState.Active;
             //AndyAccount.Balance = 1000;
 
+            /*Account Andy;
+            Andy = new Account();
 
-            // Test to create account  
-            Account Andy;
-            Andy = new CustomerAccount();
-
-            Console.Write("Enter name of customer account: ");
+            Console.Write("Enter name: ");
 
             string nameinput = Console.ReadLine();
-            Andy.Name = nameinput;
-            Console.WriteLine("Name = " + Andy.Name);
-            
-            Account BabyAndy;
-            BabyAndy = new BabyAccount();
+            Andy.m_name = nameinput;
+            Console.Write("Name = ");
+            Console.WriteLine(Andy.m_name);
 
-            Console.Write("Enter name of baby account: ");
 
-            nameinput = Console.ReadLine();
-            BabyAndy.Name = nameinput;
-            Console.WriteLine("Name = " + Andy.Name);
-
-             //   Test withdraw of funds
             Console.WriteLine("How much do you wish to withdraw?");
             decimal withdrawrequest;
             string withdrawstring;
             withdrawstring = Console.ReadLine();
             withdrawrequest = decimal.Parse(withdrawstring);
 
-            Andy.WithdrawFunds(withdrawrequest);
-            BabyAndy.WithdrawFunds(withdrawrequest);
+            if (Andy.WithdrawFunds(withdrawrequest) == true)
+                Console.WriteLine("Withdrawal successful");
+            else
+
+                Console.Write("Withdrawal failed.");
+
 
             Console.ReadLine();
-            
+            */
 
         }
 
