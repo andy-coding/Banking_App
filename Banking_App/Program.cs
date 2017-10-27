@@ -7,8 +7,7 @@ namespace Banking_App
 
     interface IAccount
     {
-        string Name
-            {get; set;}
+
         string GetName();
         bool WithdrawFunds(decimal withdraw);
         decimal GetBalance();
@@ -38,27 +37,15 @@ namespace Banking_App
             HighInterest,
         };
 
-        private string name;
-        public string Name
-            {
-                get
-                {
-                    return this.name;
-                }
-                set
-                {
-                    this.name = value;
-                }
-            }
-
-        private string address;
-        private decimal balance = 25; //  ***** temporary value for debugging
+        public string name;
+        public string address;
+        public decimal balance = 25; //  ***** temporary value for debugging
         private AccountState state;
         private AccountType accountType;
            
         public virtual bool WithdrawFunds(decimal withdrawAmount)
         {
-           // Console.WriteLine("name: {0}    Name:  {1}", name, Name);
+           // Console.WriteLine("name: {0} ", name);
 
             if (withdrawAmount > balance)
             {
@@ -68,7 +55,7 @@ namespace Banking_App
             else
             {
                 balance = balance - withdrawAmount;
-                Console.WriteLine("£" + withdrawAmount + " withdrawn from account: " + this.Name + ". Balance is now: £" + balance);
+                Console.WriteLine("£" + withdrawAmount + " withdrawn from account: " + this.name + ". Balance is now: £" + balance);
                 return true;
             }
         }
@@ -104,24 +91,34 @@ namespace Banking_App
         }
 
         //constructor
-        public Account (string Name, string inAddress, decimal inBalance)
+        public Account (string inName, string inAddress, decimal inBalance)
         {
-        name = Name;
+        name = inName;
         address = inAddress;
         balance = inBalance;
         }
+
+        public string GetName() 
+        { 
+            return name; 
+        }
+
     }
  
+               /*
     class CustomerAccount : Account
     {
-        public CustomerAccount (string Name, string inAddress, decimal inBalance)
+        public CustomerAccount (string inName, string inAddress, decimal inBalance)
         {
-        base.name = Name;
+        base.name = inName;
         base.address = inAddress;
         base.balance = inBalance;
         }
     }
 
+
+
+ 
     class BabyAccount : Account
     {
         public override bool WithdrawFunds(decimal withdrawAmount)
@@ -137,7 +134,7 @@ namespace Banking_App
             }
         }
     }
-
+    */
 
     class InputHandling     //Input Handling
     {
