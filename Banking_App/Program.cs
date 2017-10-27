@@ -5,6 +5,8 @@ namespace Banking_App
 {
     interface IAccount
     {
+        string Name
+            {get; set;}
         bool WithdrawFunds(decimal withdraw);
         decimal GetBalance();
         bool DepositFunds(decimal deposit);
@@ -33,7 +35,16 @@ namespace Banking_App
 
         private string name;
         public string Name
-            {get; set;}
+            {
+                get
+                {
+                    return this.name;
+                }
+                set
+                {
+                    this.name = value;
+                }
+            }
 
         private string address;
         private decimal balance = 25; //  ***** temporary value for debugging
@@ -42,6 +53,8 @@ namespace Banking_App
            
         public virtual bool WithdrawFunds(decimal withdrawAmount)
         {
+           // Console.WriteLine("name: {0}    Name:  {1}", name, Name);
+
             if (withdrawAmount > balance)
             {
                 Console.WriteLine("Insufficient funds.");
@@ -50,11 +63,12 @@ namespace Banking_App
             else
             {
                 balance = balance - withdrawAmount;
-                Console.WriteLine("£" + withdrawAmount + " withdrawn from account: " + this.Name);
+                Console.WriteLine("£" + withdrawAmount + " withdrawn from account: " + this.Name + ". Balance is now: £" + balance);
                 return true;
             }
         }
 
+ 
         public decimal GetBalance()
         {
             return balance;
@@ -225,8 +239,8 @@ namespace Banking_App
             withdrawstring = Console.ReadLine();
             withdrawrequest = decimal.Parse(withdrawstring);
 
-            Andy.WithdrawFunds(11);
-            BabyAndy.WithdrawFunds(11);
+            Andy.WithdrawFunds(withdrawrequest);
+            BabyAndy.WithdrawFunds(withdrawrequest);
 
             Console.ReadLine();
             
