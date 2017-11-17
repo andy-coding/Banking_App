@@ -3,6 +3,9 @@
 
 namespace Banking_App
 {
+
+    // firstly create Accounts based on interface and abstract Account object
+
     interface IAccount
     {
         string Name
@@ -12,13 +15,13 @@ namespace Banking_App
         bool DepositFunds(decimal deposit);
         string ToString();
         bool Equals(object o);
-        
-        //test test test test
+        string GetName();
     }
-     
 
-    class Account : IAccount
+    public class Account : IAccount
     {
+
+
         enum AccountState
         {
                 New,
@@ -52,7 +55,27 @@ namespace Banking_App
         private decimal balance = 25; //  ***** temporary value for debugging
         private AccountState state;
         private AccountType accountType;
-           
+
+
+
+        public Account(string inName, string inAddress, decimal inBalance)
+        {
+            Name = inName;
+            address = inAddress;
+            balance = inBalance;
+        }
+
+        public Account(string inName, decimal inBalance)
+        {
+            Name = inName;
+            balance = inBalance;
+        }
+
+        public Account()
+        {
+
+        }
+
         public virtual bool WithdrawFunds(decimal withdrawAmount)
         {
            // Console.WriteLine("name: {0}    Name:  {1}", name, Name);
@@ -69,7 +92,6 @@ namespace Banking_App
                 return true;
             }
         }
-
  
         public decimal GetBalance()
         {
@@ -79,11 +101,16 @@ namespace Banking_App
         public bool DepositFunds(decimal deposit)
         {
             return true;
-        }  
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
 
         public override string ToString()
         {
-            return "AccountState: " + this.state + "/nAccountTyoe: " + this.accountType + "/nm_name: " + this.name + "/nm_address: " + this.address + "/nm_balance: " + this.balance; 
+            return "\nObject: " + this.GetType() + "\nAccountState: " + this.state + "\nAccountType: " + this.accountType + "\nm_name: " + this.name + "\nm_address: " + this.address + "\nm_balance: " +  this.balance + "\n\n"; 
         }
 
         public override bool Equals(object obj)
@@ -103,7 +130,6 @@ namespace Banking_App
 
     }
 
-    
     class CustomerAccount : Account
     {
 
@@ -124,6 +150,56 @@ namespace Banking_App
             }
         }
     }
+
+
+    // Now create an array to store accounts
+
+    interface IBank
+    {
+        IAccount FindAccount(string name);
+        bool StoreAccount(IAccount account);
+    }
+
+    class ArrayBank
+    {
+        private IAccount[] accounts;
+        public ArrayBank(int bankSize)
+        {
+            accounts = new IAccount[bankSize];
+        }
+
+        public bool StoreAccount(IAccount account)
+        {
+            int position = 0;
+            for (position = 0; position < accounts.Length; position++)
+            {
+                if (accounts[position] == null)
+                {
+                    accounts[position] = account;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public IAccount FindAccount(string name)
+        {
+            int position = 0;
+            for (position = 0; position < accounts.Length; position++)
+            {
+                if (accounts[position] == null)
+                {
+                    continue;
+                }
+                if (accounts[position].GetName() == name)
+                {
+                    return accounts[position];
+                }
+            }
+            return null;
+        }
+    }
+
 
     class InputHandling     //Input Handling
     {
@@ -203,6 +279,7 @@ namespace Banking_App
             }
     }           
 
+
     class BankingApp
     {
 
@@ -213,6 +290,12 @@ namespace Banking_App
             //AccountStruct AndyAccount;
             //AndyAccount.State = AccountState.Active;
             //AndyAccount.Balance = 1000;
+
+            ArrayBank ourBank = new ArrayBank(100);
+            Account newAccount = new Account("Rob", "Robs House", 1000000);
+            if (ourBank.StoreAccount(newAccount) == true) Console.WriteLine("Account added to bank");
+            IAccount storedAccount = ourBank.FindAccount("Rob");
+            if (storedAccount != null) Console.WriteLine("Account found in bank");
 
 
             // Test to create account  
@@ -242,17 +325,15 @@ namespace Banking_App
             withdrawrequest = decimal.Parse(withdrawstring);
 
             Andy.WithdrawFunds(withdrawrequest);
+            Console.Write(Andy.ToString());
+            Console.Write(BabyAndy.ToString());
             BabyAndy.WithdrawFunds(withdrawrequest);
 
             Console.ReadLine();
-            
 
         }
 
     }
-
-
-
 
 }
 
