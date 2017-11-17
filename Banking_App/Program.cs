@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 
 namespace Banking_App
@@ -160,7 +161,7 @@ namespace Banking_App
         bool StoreAccount(IAccount account);
     }
 
-    class ArrayBank
+    class ArrayBank : IBank
     {
         private IAccount[] accounts;
         public ArrayBank(int bankSize)
@@ -200,6 +201,21 @@ namespace Banking_App
         }
     }
 
+    class DictionaryBank
+    {
+        Dictionary<string, IAccount> accountDictionary = new Dictionary<string, IAccount>();
+        public IAccount FindAccount(string name)
+        {
+            if (accountDictionary.ContainsKey(name)) return accountDictionary[name];
+            else return null;
+        }
+        public bool StoreAccount(IAccount account)
+        {
+            if (accountDictionary.ContainsKey(account.GetName())) return false;
+            accountDictionary.Add(account.GetName(), account);
+            return true;
+        }
+    }
 
     class InputHandling     //Input Handling
     {
